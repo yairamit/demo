@@ -2,6 +2,7 @@ package com.example.demo.client;
 
 import com.example.demo.server.ChatRoom;
 import com.example.demo.view.ChatFrame;
+import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import java.io.*;
@@ -14,8 +15,10 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
 
-    public Client( String host,int port ){
+    private ChatRoom chatRoom;
 
+    public Client( String host,int port ){
+                chatRoom= new ChatRoom();
 
 
         try {
@@ -56,9 +59,14 @@ public class Client {
 
                 while (true) {
                     try {
-                        // read the message sent to this client
-                        String msg = client.bufferedReader.readLine();
+                        String msg;
+                        msg = client.bufferedReader.readLine();
                         System.out.println(msg);
+                        // read the message sent to this client
+//                        JSONObject jSONObject =new JSONObject();
+
+//                        JSONObject = client.bufferedReader.readLine();
+//                       client.chatRoom.getMsgs(JSONObject);
                     } catch (IOException e) {
 
                         e.printStackTrace();

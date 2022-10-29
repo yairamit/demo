@@ -14,13 +14,13 @@ public class Message {
     }
 
     public Message(JSONObject json) {
-        this.date = (Date) json.get("date");
+        this.date = new Date((Long) json.get("date"));
         this.val = (String) json.get("val");
     }
 
     public JSONObject tojson(){
         JSONObject json = new JSONObject();
-        json.put("date", this.date.toString());
+        json.put("date", this.date.getTime());
         json.put("val", this.val);
 
         return json;

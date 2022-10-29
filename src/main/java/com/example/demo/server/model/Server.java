@@ -12,7 +12,7 @@ public class Server {
     static public Server INSTANCE = new Server(8888);
     private ServerSocket serverSocket=null;
 
-    private static ArrayList<ClientHandler> clientHandlers= new ArrayList<>();
+    private  ArrayList<ClientHandler> clientHandlers;
     private Socket socket;
     public static int usersCount=0;
     ChatRoom chatRoom = new ChatRoom();
@@ -21,7 +21,8 @@ public class Server {
         return chatRoom;
     }
 
-    private Server(int port) {
+    public Server(int port) {
+        clientHandlers = new ArrayList<>();
         try {
             System.out.println("trying new server");
             serverSocket=new ServerSocket(port);
@@ -51,7 +52,7 @@ public class Server {
 
     }
     public static void main(String[] args){
-        Server srv = Server.INSTANCE;
-//        Server server = new Server(8888);
+        //Server srv = Server.INSTANCE;
+        Server server = new Server(8888);
     }
 }

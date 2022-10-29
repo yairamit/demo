@@ -9,27 +9,27 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class ChatRoom {
-    private List<Message> msgs = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
     private List<ClientHandler> clients = new ArrayList<>();
 
     public ChatRoom() {
     }
 
-    public void getMsgs(JSONObject json) {
-        msgs.clear();
+    public void update(JSONObject json) {
+        messages.clear();
 
         JSONArray msgListJson = (JSONArray) json.get("msgs");
         for(Object jsonMsg: msgListJson) {
-           msgs.add(new Message((JSONObject) jsonMsg));
+           messages.add(new Message((JSONObject) jsonMsg));
         }
     }
     public void addMsgs(Message msg) {
-        this.msgs.add(msg);
+        this.messages.add(msg);
     }
 
     public void toJson(){
         JSONArray msgsJson = new JSONArray();
-        for (Message msg:msgs) {
+        for (Message msg: messages) {
             msgsJson.add(msg.tojson());
         }
 
