@@ -1,28 +1,29 @@
 package com.example.demo.server.model;
 
+import com.example.demo.model.ChatRoom;
 import com.example.demo.server.controller.ClientHandler;
-import com.example.demo.server.ChatRoom;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Server {
-    static public Server INSTANCE = new Server(8888);
-    private ServerSocket serverSocket=null;
 
-    private  ArrayList<ClientHandler> clientHandlers;
+//    static public Server INSTANCE = new Server(8888);
+    private ServerSocket serverSocket=null;
+    private int port;
+//    private  ArrayList<ClientHandler> clientHandlers;
     private Socket socket;
     public static int usersCount=0;
-    ChatRoom chatRoom = new ChatRoom();
+    private ChatRoom chatRoom;
 
-    public ChatRoom getChatRoom() {
-        return chatRoom;
+    public Server() {
+        this.port = 8888;
+        this.chatRoom =  new ChatRoom();
+//        this.clientHandlers = new ArrayList<>();
     }
 
-    public Server(int port) {
-        clientHandlers = new ArrayList<>();
+    public void start(){
         try {
             System.out.println("trying new server");
             serverSocket=new ServerSocket(port);
@@ -33,17 +34,20 @@ public class Server {
                 socket=serverSocket.accept();
                 usersCount++;
 
-                ClientHandler clientHandler =new ClientHandler(socket);
-                        Thread thread = new Thread(clientHandler);
+                ClientHandler clientHandler =new ClientHandler(socket, chatRoom);
+                Thread thread = new Thread(clientHandler);
                 thread.start();
-               clientHandlers.add(clientHandler);
+                chatRoom.addClient(clientHandler);
+//                clientHandlers.add(clientHandler);
 
             }
 
         }catch (IOException e) {
 
         }
-
+    }
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
 
 
@@ -51,8 +55,5 @@ public class Server {
     public  void closeServer(){
 
     }
-    public static void main(String[] args){
-        //Server srv = Server.INSTANCE;
-        Server server = new Server(8888);
-    }
+
 }

@@ -1,10 +1,9 @@
-package com.example.demo.server;
+package com.example.demo.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.server.controller.ClientHandler;
-import com.example.demo.server.model.Message;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -15,45 +14,40 @@ public class ChatRoom {
     public ChatRoom() {
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
+
     public void update(JSONObject json) {
         messages.clear();
 
-        JSONArray msgListJson = (JSONArray) json.get("msgs");
+        JSONArray msgListJson = (JSONArray) json.get("messages");
         for(Object jsonMsg: msgListJson) {
            messages.add(new Message((JSONObject) jsonMsg));
         }
+
     }
-    public void addMsgs(Message msg) {
+
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
+    public void addClient(ClientHandler client){
+        clients.add(client);
+    }
+
+    public void addMessage(Message msg) {
         this.messages.add(msg);
     }
 
-    public void toJson(){
+    public JSONObject toJson(){
         JSONArray msgsJson = new JSONArray();
         for (Message msg: messages) {
             msgsJson.add(msg.tojson());
         }
+        JSONObject chatJson = new JSONObject();
+        chatJson.put("messages", msgsJson);
 
+        return chatJson;
     }
-
-
-
 }
-/**
- * chatroom's json   <-
- * {"msgs": [
- *     {"date": 21312321, "val":  "hello yo"},
- *      {"date": 21312321, "val":  "hello yo"},
- *      {"date": 21312321, "val":  "hello yo"},
- *      {"date": 21312321, "val":  "hello yo"},
- *      {"date": 21312321, "val":  "hello yo"},
- *      {"date": 21312321, "val":  "hello yo"},
- * ]}
- *
- *
- *
- *
- *
- *
- *
- *
- */
